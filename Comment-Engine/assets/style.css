@@ -1,0 +1,170 @@
+/* =============================
+   Layout & Reset
+============================= */
+.comments-area {
+    margin-top: 60px;
+    font-family: inherit;
+}
+.comment-list {
+    list-style: none;
+    padding: 0;
+}
+
+/* =============================
+   Comment Card Structure
+============================= */
+.comment {
+    /* Colors handled by PHP */
+    padding: 20px 24px;
+    margin-bottom: 20px;
+    box-shadow: 0 12px 30px rgba(0,0,0,0.05);
+    transition: all 0.3s ease;
+    position: relative; /* For positioning actions */
+}
+.comment:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 18px 40px rgba(0,0,0,0.08);
+}
+.comment-author {
+    display: flex;
+    align-items: center;
+    margin-bottom: 10px;
+}
+.comment-author img {
+    margin-left: 12px;
+    /* Size handled by PHP */
+}
+.comment-author .fn {
+    font-weight: 700;
+}
+.comment-metadata {
+    margin-bottom: 10px;
+    display: block;
+}
+
+/* =============================
+   Actions (Like/Dislike)
+============================= */
+.wp-comment-actions {
+    display: flex;
+    justify-content: flex-end; /* Bottom Left in RTL is flex-end? No, RTL direction LTR logic */
+    /* Assuming site is RTL */
+    flex-direction: row-reverse; 
+    align-items: center;
+    margin-top: 15px;
+    border-top: 1px solid rgba(0,0,0,0.05);
+    padding-top: 10px;
+}
+.wp-comment-actions span {
+    display: inline-flex;
+    align-items: center;
+    margin-right: 15px;
+    cursor: pointer;
+    opacity: 0.6;
+    transition: 0.3s;
+}
+.wp-comment-actions span:hover,
+.wp-comment-actions span.active {
+    opacity: 1;
+    transform: scale(1.1);
+}
+.wp-comment-actions svg {
+    margin-left: 5px;
+}
+
+/* =============================
+   Form
+============================= */
+.comment-respond {
+    margin-top: 50px;
+    background: #fff;
+    padding: 30px;
+    border-radius: 20px;
+    box-shadow: 0 18px 45px rgba(0,0,0,0.06);
+    position: relative;
+}
+.comment-form input,
+.comment-form textarea {
+    width: 100%;
+    padding: 14px 16px;
+    border: 1px solid transparent; /* Handle border color via settings or simple default */
+    font-size: 14px;
+    transition: all 0.3s ease;
+    margin-bottom: 10px;
+}
+.comment-form input:focus,
+.comment-form textarea:focus {
+    outline: none;
+    background: #fff !important;
+    box-shadow: 0 0 0 3px rgba(0,0,0,0.05);
+}
+.comment-form input[type=submit] {
+    border: none;
+    padding: 14px 36px;
+    font-size: 14px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    margin-top: 10px;
+    display: inline-block;
+}
+.comment-form input[type=submit]:hover {
+    transform: translateY(-2px);
+    opacity: 0.9;
+}
+.wp-ce-cancel-reply {
+    background: transparent;
+    border: 1px solid #ff4d4d;
+    color: #ff4d4d;
+    padding: 8px 15px;
+    border-radius: 10px;
+    cursor: pointer;
+    font-size: 12px;
+    margin-right: 10px;
+}
+.wp-ce-cancel-reply:hover {
+    background: #ff4d4d;
+    color: white;
+}
+.wp-ce-fields-row {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+}
+.wp-ce-fields-row p {
+    flex: 1;
+    min-width: 200px;
+}
+
+/* =============================
+   Toast Notification
+============================= */
+.wp-toast {
+    position: fixed;
+    bottom: 30px;
+    right: 30px;
+    background: #111;
+    color: #fff;
+    padding: 14px 22px;
+    border-radius: 12px;
+    opacity: 0;
+    transform: translateY(20px);
+    transition: .3s;
+    z-index: 99999;
+    font-size: 14px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+.wp-toast.pending {
+    background: #ff9800; /* Orange for pending */
+    color: #fff;
+}
+.wp-toast.error {
+    background: #f44336; /* Red for error */
+}
+.wp-toast.show {
+    opacity: 1;
+    transform: none;
+}
