@@ -3,7 +3,7 @@
 Plugin Name:        WP Comment Engine
 Plugin URI:         https://github.com/im-JvD/Comment-Engine
 Description:        افزونه پیشرفته ارسال دیدگاه (AJAX) با قابلیت شخصی‌سازی کامل استایل و تنظیمات مدیریتی.
-Version:            0.0.9
+Version:            0.1.0
 Author:             محمد جواد کریمی
 Author URI:         https://mohamadjavadkarimi.ir/
 */
@@ -277,7 +277,7 @@ function wp_comment_submit() {
     $opt = get_option('wp_ce_settings');
 
     // Email Handling
-    $email = 'hidden@email.com';
+    $email = 'guest_' . md5(uniqid()) . '@no-email.com';
     if(isset($opt['email_field']) && $opt['email_field'] === 'on' && !empty($_POST['email'])){
         $email = sanitize_email($_POST['email']);
     }
@@ -334,26 +334,20 @@ add_action('wp_ajax_wp_comment_like', 'wp_comment_like');
 add_action('wp_ajax_nopriv_wp_comment_like', 'wp_comment_like');
 
 function wp_comment_like(){
+    // 1. بررسی امنیتی (Nonce Check) - حیاتی
+    check_ajax_referer('wp_comment_nonce', 'nonce');
+
     $id   = intval($_POST['id']);
     $type = sanitize_text_field($_POST['type']);
-    $ip   = $_SERVER['REMOTE_ADDR'];
+    
+    // نکته مهم: در نسخه سبک، ذخیره IP در دیتابیس حذف شد چون باعث کندی شدید سایت می‌شود.
+    // جلوگیری از تقلب را به کوکی (در فایل JS) و سشن مرورگر می‌سپاریم.
 
-    // Check Duplicate by IP (Meta)
-    $voters = get_comment_meta($id, '_voters_ip', true);
-    if(!is_array($voters)) $voters = [];
-
-    if(in_array($ip, $voters)){
-        wp_send_json_error('شما قبلا رای داده‌اید!');
-    }
-
-    // Update Meta
     $key  = $type === 'like' ? 'likes' : 'dislikes';
     $val  = (int) get_comment_meta($id, $key, true);
-    update_comment_meta($id, $key, $val + 1);
     
-    // Add IP to voters
-    $voters[] = $ip;
-    update_comment_meta($id, '_voters_ip', $voters);
+    update_comment_meta($id, $key, $val + 1);
 
     wp_send_json_success($val + 1);
 }
+

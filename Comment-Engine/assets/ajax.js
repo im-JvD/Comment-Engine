@@ -103,6 +103,7 @@ jQuery(function ($) {
 
         $.post(WPComment.ajax, {
             action: 'wp_comment_like',
+            nonce: WPComment.nonce,
             id: id,
             type: type
         }, res => {
